@@ -1,0 +1,47 @@
+#!/bin/bash
+
+# Path to the Python script (adjust if you saved it elsewhere)
+PYTHON_SCRIPT="$HOME/.local/bin/list_dir_table.py"
+
+# --- Divider Function (same as in cls script) ---
+print_divider() {
+  local char="-"
+  local width=$(tput cols)
+  if [ -z "$width" ] || ! [[ "$width" =~ ^[0-9]+$ ]]; then width=80; fi
+  # Generate the line using printf and tr
+  printf '%*s' "$width" "" | tr ' ' "$char"
+  echo # Add a newline at the end
+}
+# ------------------------------------------------
+
+# Optional: Clear the screen first (uncomment if desired)
+# clear
+
+# Check if the Python script exists and is executable
+if [ ! -x "$PYTHON_SCRIPT" ]; then
+  echo "Error: Python script not found or not executable at $PYTHON_SCRIPT" >&2
+  echo "Please ensure '$PYTHON_SCRIPT' exists and has execute permissions." >&2
+  echo "You may need to run 'chmod +x $PYTHON_SCRIPT'" >&2
+  exit 1
+fi
+
+# Clear terminal
+clear
+
+# Print Header Divider
+print_divider
+
+# Print Current Directory
+echo "Current Directory: $(pwd)" # $(pwd) gets the current path in the shell
+
+# Print Second Divider
+echo
+
+# Run the Python script
+# The script automatically operates on the current directory it's launched from
+python3 "$PYTHON_SCRIPT" # Use python3 or python depending on your installation
+
+# Print Footer Divider
+print_divider
+
+exit 0 # Indicate successful execution of the shell script
